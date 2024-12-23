@@ -37,7 +37,7 @@ docker exec -it nginx ping grafana
 docker exec -it nginx ping jenkins
 **[ping failed]**
 ```
-Even though all the containers are on the same Docker network (bridge, check network id below, same for all containers), Nginx inside the container is unable to resolve the container names (grafana, jenkins). This is because the default bridge network doesn't support container name resolution by default  
+**Issue:** Even though all the containers are on the same Docker network (bridge, check network id below, same for all containers), Nginx inside the container is unable to resolve the container names (grafana, jenkins). This is because the default bridge network doesn't support container name resolution by default  
 ```bash
 docker inspect nginx
  "Networks": {
@@ -156,7 +156,7 @@ Test the below URLS now :
 http://grafana.local:8081/
 http://jenkins.local:8081/
 ```
-Understanding the Flow:
+**Understanding the Flow:**
 ```bash
 http://grafana.local:8081/
 	- browser resolves to IP address as per entries in hosts file
