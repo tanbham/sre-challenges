@@ -217,6 +217,45 @@ docker commit 284b8fa67c4b nginx-new   #commit id of already running container
 docker images
 docker run -d --name=nginx-new-cont -e TZ=UTC -p 80:80 -p 443:443 --network=my-network nginx-new:latest
 ````
+Modify the server blocks of nginx as below
+```bash
+server {
+        #listen 80;
+        listen 443 ssl;
+        server_name grafana.local;
+
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+        location / {
+          auth_basic "Restricted Content";
+          auth_basic_user_file /etc/nginx/.htpasswd;
+          proxy_pass http://grafana:3000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+}
+server {
+        #listen 80;
+        listen 443 ssl;
+        server_name jenkins.local;
+
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+        location / {
+          auth_basic "Restricted Content";
+          auth_basic_user_file /etc/nginx/.htpasswd;
+          proxy_pass http://jenkins:8080;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+}
+````
 Issue: #now the certs are in WSL, but we are testing from local machine, so copy the cert in windows and installed them  
 ```bash
 cp /root/nginx-selfsigned.crt /mnt/c/Users/Tanmay/Desktop/
