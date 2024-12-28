@@ -27,21 +27,20 @@ Task is to deploy Python Flask Application and MQSQL database on different VM in
 
 ![image](https://github.com/user-attachments/assets/2fc8b34a-62ac-4fff-8895-39e443fbd7f7)
 
-- The route for the instances having network tag as "private-network-tag" [The VM is located in private-subnet of network my-vpc] has next hop as "Default internet gateway"
-- In GCP, there is no option to  explicitly select next hop as "NAT Gatway" so we have to select as "Default internet gateway"
+- The route for the instances having network tag as "sql-app-network-tag" [The VM is located in private-subnet of network my-vpc] has next hop as "Default internet gateway"
+- In GCP, there is no option to explicitly select next hop as "NAT Gatway" so we have to select as "Default internet gateway"
 - Outbound traffic from all instances in private-subnet will go via NAT Gateway bcs we have already created a NAT gateway and mapped to the private-subnet
 
 ## Flow
 - VM in Private Subnet: When a VM in the private subnet generates outbound traffic, it is destined for the Internet (0.0.0.0/0).
-- Route Evaluation: The route for 0.0.0.0/0 applies, and GCP looks for the Next hop:
-  - The route for 0.0.0.0/0 points to the Default Internet Gateway.
-  - Because the NAT Gateway is linked to the private subnet, GCP automatically routes the traffic from the private subnet to the NAT Gateway, which handles the translation of private IP addresses to public IP addresses
+- Route Evaluation: The route for 0.0.0.0/0 applies, and GCP looks for the Next hop
+- Because the NAT Gateway is linked to the private subnet, GCP automatically routes the traffic from the private subnet to the NAT Gateway, which handles the translation of private IP addresses to public IP addresses
 
 ## Step 4: Create GCE instances in public and private subnets
 
 ![image](https://github.com/user-attachments/assets/a6527e21-ccf3-4a32-b065-9a0a7de00d12)
 
-- Make sure to configure network tags while creating VMs, these tags will be refered in routes and well as in fireall rules in VPC network.
+- Make sure to configure network tags while creating VMs, these tags will be refered in routes and well as in firewall rules in VPC network.
 
 ## Step 5: Create firewall rules in VPC network
 - Create a firewall rule in VPC network to allow traffic **ONLY from public instance's private IP [where flask application resides] to private instance [where MQSQL database is running on port 3306]**
