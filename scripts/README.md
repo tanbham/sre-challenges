@@ -59,3 +59,51 @@ with open(filepath, "r") as inputfile:
 #print_bucket_details(inputdata)
 print_bucket_greaterthan80gb(inputdata)
 ```
+
+## Using awk utility to extract details from user_activity.log file
+```bash
+#!/bin/bash
+
+# NF is the number of fields in the current record (line).
+# $(NF) represents the value of the last field in the current line.
+
+# Syntax : awk '{print $1}' file.txt, -F is not specified then default delimter is space, NF mean each filed in input file separated by delimter
+echo "Extracting unique Usernames"
+awk '{
+  for(i=1; i<=NF; i++){
+    if($i ~ /^user/ ){
+      print $i
+    }
+  }
+}' user_activity.log
+
+# 192.162.1.0  here we can directly use . so we use \. , [0-9]+ Matches one or more digits (0-9)
+echo "Extracting unique IP Address"
+awk '{
+  for(i=1; i<=NF; i++){
+    if($i ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){
+      print $i
+    }
+  }
+}' user_activity.log
+
+echo "Extracting the status code 403 and 404, i.e failed and status code 200, i.e success"
+awk '
+BEGIN{
+  print "Inside begin"
+  failedrequest = 0
+  successrequest = 0
+}
+{
+  if($(NF) == "403" || $(NF) == "404"){
+    failedrequest++
+  }
+  if($(NF) == "200"){
+    successrequest++
+  }
+}
+END{
+  print "Failed request count is:" failedrequest
+  print "Success request count is:" successrequest
+}' user_activity.log
+```
