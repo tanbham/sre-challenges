@@ -6,7 +6,7 @@ from googleapiclient import discovery
 def db_backup_cleanup(request):
     try:
         #PROJECT_ID is set to the environment variable or defaults to "prj-uat-svc-mc-std6b"
-        project_id = os.environ.get("PROJECT_ID", "prj-prod-svc-mc-std77")
+        project_id = os.environ.get("PROJECT_ID", "prj-prod-test")
         results = {}
         
         # Define cutoff
