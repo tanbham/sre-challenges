@@ -2,6 +2,9 @@
 
 This repository provides templates and instructions to deploy a [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/) based HTTPS load balancer on Google Kubernetes Engine (GKE), using a reserved global static IP and Google Certificate Manager.
 
+<img width="548" height="353" alt="Screenshot 2025-08-16 131704" src="https://github.com/user-attachments/assets/6c4e507d-37b9-463f-a175-7ad2b03a514a" />
+
+
 ---
 
 ## Prerequisites
