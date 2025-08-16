@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+  namespace: {{ .Values.gateway.namespace }}
+  annotations:
+    networking.gke.io/certmap: {{ .Values.gateway.certMap }}
+spec:
+  gatewayClassName: {{ .Values.gateway.gatewayClassName }}
+  listeners:
+  # - name: http
+  #   protocol: HTTP
+  #   port: 80
+  #   allowedRoutes:
+  #     namespaces:
+  #       from: "All"
+  - name: https
+    protocol: HTTPS
+    port: 443
+    allowedRoutes:
+      namespaces:
+        from: "All"
+  addresses:
+  - type: NamedAddress
+    value: {{ .Values.gateway.address }}
