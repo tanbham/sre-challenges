@@ -1,0 +1,6 @@
+gateway:
+  name: gateway-devops
+  namespace: gateway
+  certMap: nw-devops-map
+  gatewayClassName: gke-l7-global-external-managed
+  address: gateway-static-ip
